@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KishoreEduBluprint — Student Study Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      min-height: 100vh;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ================= LOGIN / SIGN UP SCREEN ================= */
+    .auth-wrapper {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .auth-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 440px;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      overflow: hidden;
+      border-top: 6px solid #dc2626;
+    }
+
+    .app-brand-bar {
+      background: #1e3a8a;
+      color: #ffffff;
+      text-align: center;
+      padding: 10px 14px;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.6px;
+    }
+
+    .cm-banner {
+      background: linear-gradient(180deg, #fef2f2 0%, #fffbeb 100%);
+      padding: 20px 18px 16px;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .cm-photo-wrapper {
+      width: 124px;
+      height: 124px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(45deg, #dc2626, #f59e0b);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .cm-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 50%;
+      background: #f3f4f6;
+      display: block;
+    }
+
+    .cm-title {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      color: #991b1b;
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .cm-name {
+      font-size: 17px;
+      font-weight: 900;
+      color: #111827;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    .form-container {
+      padding: 22px 24px 26px;
+    }
+
+    .tabs {
+      display: flex;
+      background: #f3f4f6;
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 18px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      font-weight: 700;
+      font-size: 14px;
+      color: #4b5563;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: #1e3a8a;
+      color: #ffffff;
+    }
+
+    .form-group {
+      margin-bottom: 13px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: #1e3a8a;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background: #1e3a8a;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    /* ================= NAVBAR & MAIN PORTAL ================= */
+    .navbar {
+      background: linear-gradient(90deg, #1e3a8a 0%, #0f172a 100%);
+      color: #ffffff;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 4px solid #dc2626;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand h1 {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+    }
+
+    .brand p {
+      font-size: 11px;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    .logout-btn {
+      background: #dc2626;
+      color: #ffffff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+    }
+
+    .section-heading {
+      font-size: 20px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 20px;
+    }
+
+    /* 6 Divisions Grid */
+    .divisions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 18px;
+    }
+
+    .division-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.07);
+      border-left: 6px solid #1e3a8a;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .division-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.13);
+    }
+
+    .card-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+
+    .division-card h2 {
+      font-size: 16px;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 8px;
+      line-height: 1.35;
+    }
+
+    .feature-tags {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .open-link {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* Sub-panels */
+    .panel-box {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .back-btn {
+      background: #e2e8f0;
+      color: #1e293b;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 16px;
+    }
+
+    .quiz-banner {
+      background: linear-gradient(90deg, #1e3a8a, #2563eb);
+      color: #ffffff;
+      padding: 16px 18px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .folder-card, .pdf-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      gap: 12px;
+    }
+
+    .folder-card {
+      cursor: pointer;
+    }
+
+    .folder-card:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+    }
+
+    .price-pill {
+      display: inline-block;
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #f59e0b;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-left: 6px;
+    }
+
+    .free-pill {
+      display: inline-block;
+      background: #dcfce7;
+      color: #166534;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-left: 6px;
+    }
+
+    .pdf-btn {
+      background: #dc2626;
+      color: #ffffff;
+      text-decoration: none;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .buy-btn {
+      background: #d97706;
+      color: #ffffff;
+      border: none;
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* CBSE 1st to 10th Standard Grid */
+    .std-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .std-card {
+      background: #f0f9ff;
+      border: 1.5px solid #bae6fd;
+      border-radius: 10px;
+      padding: 16px 12px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .std-card:hover {
+      background: #0284c7;
+      color: #ffffff;
+      border-color: #0284c7;
+    }
+
+    /* Quiz Styling */
+    .quiz-option {
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      background: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .quiz-option.correct {
+      background: #dcfce7;
+      border-color: #16a34a;
+      color: #14532d;
+    }
+
+    .quiz-option.wrong {
+      background: #fee2e2;
+      border-color: #dc2626;
+      color: #7f1d1d;
+    }
+
+    /* Payment Modal for ₹90 Important Questions */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 100;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 410px;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+      border-top: 6px solid #d97706;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= 1. SIGN IN / SIGN UP SCREEN ================= -->
+  <div id="authScreen" class="auth-wrapper">
+    <div class="auth-card">
+      <div class="app-brand-bar">KishoreEduBluprint</div>
+
+      <div class="cm-banner">
+        <div class="cm-photo-wrapper">
+          <img
+            src="cm-vijay-vanakkam.jpg"
+            alt="Honourable Chief Minister of Tamil Nadu C. Joseph Vijay"
+            class="cm-photo"
+            onerror="this.src='https://placehold.co'"
+          />
+HONOURABLE CHIEF MINISTER OF TAMILNADU
+C. JOSEPH VIJAY
+Sign In
+Sign Up
+Student Full Name
+Select Division / Standard
+10TH STANDARD TAMILNADU BOARD EXAM
+12TH STANDARD TAMILNADU BOARD EXAM
+JEE ASPIRANTS
+TNPSC GROUP EXAM
+NEET ASPIRANTS
+CBSE (1ST TO 10TH STANDARD)
+
+
+Mobile Number or Email
+Password
+Sign In to KishoreEduBluprint
+
+
+
+KishoreEduBluprint
+TN Board • CBSE (1st–10th) • JEE • NEET • TNPSC Study Materials
+
+Logout
+Welcome to KishoreEduBluprint
+Select your division below to open 1M materials, chapter-wise important questions (₹90), textbooks, papers & quizzes.
+
+← Back to All 6 Divisions
+
+Choose a material folder below or start the online MCQ practice quiz.
+Practice Online MCQ Quiz (FREE)
+Test your 1-Mark & Exam preparation with instant score
+
+Start Quiz →
+← Back
+
+Tap to view or download the chapter-wise PDF.
+
+← Back to All 6 Divisions
+CBSE — Select Your Standard (1st to 10th)
+Tap any standard to access Chapter-Wise Book Answer Key PDFs (FREE).
+
+← Back to Sub-Divisions
+Practice Quiz
+
+
+
+CHAPTER-WISE IMPORTANT QUESTIONS
+
+✕
+Complete Chapter-Wise Public Exam Important Questions & Answers PDF.
+ONE-TIME PDF AMOUNT
+₹90
+Pay via GPay / PhonePe / Paytm UPI:
+7373736001@upi
+Pay ₹90 Now via UPI App
+Already Paid ₹90? Enter Unlock Code:
+Unlock
+
+Invalid unlock code. Please check and try again.
+
+
+// =====================================================================
+// CONFIGURATION: YOUR UPI ID & UNLOCK CODE
+// =====================================================================
+const MY_UPI_ID = '7373736001@upi';
+const PDF_UNLOCK_CODE = 'KISHORE90';
+// =====================================================================
+// ALL STUDY MATERIALS (10TH & 12TH IMPORTANT QUESTIONS SET TO ₹90)
+//
+// =====================================================================
+const APP_DIVISIONS = [
+{
+id: 'TN10',
+badge: 'DIVISION 01 • SSLC',
+title: '10TH STANDARD TAMILNADU BOARD EXAM',
+color: '#2563eb',
+bg: '#eff6ff',
+desc: '• 1M Materials (FREE)\n• Important Questions Chapter-Wise PDF (₹90)\n• 10 Years Official Public Exam Papers & Book PDFs',
+folders: {
+'1M (1-Mark) Materials': {
+price: 0,
+files: [
+{ title: '10th Science & Social — All Units Creative 1-Mark Bank', sub: 'Book Back + PTA + Public Exam 1-Mark PDF', url: 'w3.org' },
+{ title: '10th Tamil & English — 1-Mark Grammar & Vocabulary PDF', sub: 'Complete One-Mark Study Material', url: 'w3.org' }
+]
+},
+'Important Questions Materials (Chapter-Wise PDF)': {
+price: 90,
+files: [
+{ title: '10th Mathematics — Chapter-Wise Important 2, 5 & 8-Mark Questions PDF', sub: 'All Chapters Public Exam Expected Questions & Solutions (₹90)', url: 'w3.org' },
+{ title: '10th Science — Chapter-Wise Important Questions & Diagrams PDF', sub: 'Physics, Chemistry & Biology Public Exam Sure-Shot Q&A (₹90)', url: 'w3.org' },
+{ title: '10th Social Science — Chapter-Wise Important 2 & 5-Mark Questions PDF', sub: 'History, Geography, Civics & Economics Q&A (₹90)', url: 'w3.org' }
+]
+},
+'10 Years Official Public Exam Papers': {
+price: 0,
+files: [
+{ title: 'TN 10th SSLC 10 Years Official Public Exam Papers (2016–2025)', sub: 'Official DGE Papers + Govt Answer Keys', url: 'w3.org' }
+]
+},
+'Tamil Nadu 10th Book PDFs': {
+price: 0,
+files: [
+{ title: 'TN 10th Samacheer Kalvi Textbooks (Tamil & English Medium)', sub: 'Official Full Textbooks PDF', url: 'w3.org' }
+]
+}
+}
+},
+{
+id: 'TN12',
+badge: 'DIVISION 02 • HSC',
+title: '12TH STANDARD TAMILNADU BOARD EXAM',
+color: '#dc2626',
+bg: '#fef2f2',
+desc: '• Always-Available 1M Materials (FREE)\n• Important Questions Chapter-Wise PDF (₹90)\n• 10 Years Official Public Exam Papers & Book PDFs',
+folders: {
+'1M (1-Mark) Materials': {
+price: 0,
+files: [
+{ title: '12th Physics — All Chapters Creative 1-Mark Study Material', sub: 'Book Back + Interior Creative 1-Marks PDF', url: 'w3.org' },
+{ title: '12th Chemistry — All Chapters 1-Mark Material (Tamil & English)', sub: 'Repeated Public Exam 1-Marks with Answer Key', url: 'w3.org' },
+{ title: '12th Maths — Chapter 1 to 12 One-Mark Shortcut Guide', sub: 'Step-by-Step Solutions PDF', url: 'w3.org' }
+]
+},
+'Important Questions Materials (Chapter-Wise PDF)': {
+price: 90,
+files: [
+{ title: '12th Physics — Chapter-Wise Important 2, 3 & 5-Mark Questions PDF', sub: 'All Chapters Guaranteed Public Exam Questions & Answers (₹90)', url: 'w3.org' },
+{ title: '12th Chemistry — Chapter-Wise Important Questions & Equations PDF', sub: 'Organic, Inorganic & Physical Chemistry Chapter-Wise Q&A (₹90)', url: 'w3.org' },
+{ title: '12th Mathematics — Chapter-Wise Important 2, 3 & 5-Mark Sums PDF', sub: 'Volume 1 & Volume 2 Expected Board Exam Problems (₹90)', url: 'w3.org' },
+{ title: '12th Biology — Chapter-Wise Important 5-Mark Q&A & Diagrams PDF', sub: 'Botany & Zoology Complete Chapter-Wise PDF (₹90)', url: 'w3.org' }
+'Last 6 Years Exam Papers': {
+price: 0,
+files: [
+{ title: 'JEE Main & Advanced Last 6 Years Solved Papers (2021–2026)', sub: 'Shift-Wise Official Papers & Answer Keys PDF', url: 'w3.org' }
+]
+},
+'Important Formula & Notes': {
+price: 0,
+files: [
+{ title: 'Physics, Chemistry & Maths Complete Formula Handbook PDF', sub: 'Quick Revision Notes for JEE', url: 'w3.org' }
+]
+}
+}
+},
+{
+id: 'TNPSC',
+badge: 'DIVISION 04 • GOVT EXAMS',
+title: 'TNPSC GROUP EXAM',
+color: '#059669',
+bg: '#ecfdf5',
+desc: '• Group 1, 2/2A, 4 & VAO Materials\n• Samacheer 6th–12th Book Back Q&A\n• Previous Year Papers & Quiz',
+folders: {
+'Group 1, 2/2A & Group 4 Materials': {
+price: 0,
+files: [
+{ title: 'TNPSC Group 4 & VAO Complete Study Material (Tamil & English)', sub: 'General Tamil, General Studies & Aptitude PDF', url: 'w3.org' }
+]
+},
+'Samacheer 6th–12th Book Back Q&A': {
+price: 0,
+files: [
+{ title: '6th to 12th New Samacheer Book Back Q&A Compilation', sub: 'History, Polity, Geography, Economy & Science PDF', url: 'w3.org' }
+]
+},
+'Previous Year Official Papers': {
+price: 0,
+files: [
+{ title: 'TNPSC Last 10 Years Official Question Papers + Answer Key', sub: 'Group 1, Group 2 & Group 4 Solved PDFs', url: 'w3.org' }
+]
+}
+}
+},
+{
+id: 'NEET',
+badge: 'DIVISION 05 • MEDICAL',
+title: 'NEET ASPIRANTS',
+color: '#7c3aed',
+bg: '#f5f3ff',
+desc: '• Model Question Papers (180 Questions)\n• Last 6 Years Exam Papers\n• Important NCERT Notes & Quiz',
+folders: {
+'Model Question Papers': {
+price: 0,
+files: [
+{ title: 'NEET UG 180-Question Full Syllabus Model Papers (Set 1–15)', sub: 'NCERT-Based Practice Papers with Solutions PDF', url: 'w3.org' }
+]
+},
+'Last 6 Years Exam Papers': {
+price: 0,
+files: [
+{ title: 'NEET UG Last 6 Years Official Exam Papers (2021–2026)', sub: 'Official NTA Question Papers + Solutions PDF', url: 'w3.org' }
+]
+},
+'Important NCERT Notes': {
+price: 0,
+files: [
+{ title: 'NCERT Line-by-Line Biology & Chemistry Important Points PDF', sub: 'High-Yield Revision Material', url: 'w3.org' }
+]
+}
+}
+},
+{
+id: 'CBSE',
+badge: 'DIVISION 06 • 1ST TO 10TH STANDARD',
+title: 'CBSE',
+color: '#0284c7',
+bg: '#e0f2fe',
+desc: '• Sub-Divisions: 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th, 9th & 10th Standard\n• Book Answer Key — Chapter-Wise PDFs'
+}
+];
+const QUIZ_DATA = {
+TN12: [
+{ q: 'What is the SI unit of electric flux?', opts: ['N m² C⁻¹', 'N C⁻¹', 'V m⁻¹', 'J C⁻¹'], ans: 0 },
+{ q: 'Which of the following is an ore of Aluminium?', opts: ['Haematite', 'Bauxite', 'Galena', 'Cinnabar'], ans: 1 }
+],
+TN10: [
+{ q: 'Who was the first President of the Indian National Congress?', opts: ['W.C. Bonnerjee', 'Dadabhai Naoroji', 'Badruddin Tyabji', 'Gokhale'], ans: 0 }
+],
+JEE: [
+{ q: 'If |A + B| = |A - B|, what is the angle between vectors A and B?', opts: ['0°', '45°', '90°', '180°'], ans: 2 }
+],
+NEET: [
+{ q: 'Which cell organelle is known as the powerhouse of the cell?', opts: ['Ribosome', 'Mitochondria', 'Golgi apparatus', 'Lysosome'], ans: 1 }
+],
+TNPSC: [
+{ q: 'How many Adhikarams (Chapters) are there in Thirukkural?', opts: ['100', '130', '133', '150'], ans: 2 }
+]
+};
+let activeDivision = null;
+let pendingPdfUrl = '';
+let isPaidUnlocked = localStorage.getItem('kishore_imp_unlocked') === 'true';
+let qIndex = 0;
+let qScore = 0;
+let qAnswered = false;
+function switchAuthMode(mode) {
+document.getElementById('signupFields').classList.toggle('hidden', mode === 'login');
+document.getElementById('loginTab').classList.toggle('active', mode === 'login');
+document.getElementById('signupTab').classList.toggle('active', mode === 'signup');
+document.getElementById('authSubmitBtn').textContent =
+mode === 'login' ? 'Sign In to KishoreEduBluprint' : 'Create Free Student Account';
+}
+function enterPortal(e) {
+e.preventDefault();
+document.getElementById('authScreen').classList.add('hidden');
+document.getElementById('portalScreen').classList.remove('hidden');
+renderHomeDivisions();
+}
+function logoutPortal() {
+document.getElementById('portalScreen').classList.add('hidden');
+document.getElementById('authScreen').classList.remove('hidden');
+}
+function hideAllViews() {
+['homeView', 'subDivisionsView', 'pdfFilesView', 'cbseStdView', 'quizView'].forEach(id => {
+document.getElementById(id).classList.add('hidden');
+});
+}
+function showHome() {
+hideAllViews();
+document.getElementById('homeView').classList.remove('hidden');
+}
+function renderHomeDivisions() {
+const grid = document.getElementById('divisionsGrid');
+grid.innerHTML = '';
+APP_DIVISIONS.forEach(div => {
+const card = document.createElement('div');
+card.className = 'division-card';
+card.style.borderLeftColor = div.color;
+card.innerHTML = <div> <span class="card-badge" style="background:${div.bg}; color:${div.color};">${div.badge}</span> <h2>${div.title}</h2> <p class="feature-tags" style="white-space:pre-line;">${div.desc}</p> </div> <div class="open-link" style="color:${div.color};"> ${div.id === 'CBSE' ? 'Open 1st to 10th Standard Sub-Divisions →' : 'Open Materials, PDFs & Quiz →'} </div>;
+card.onclick = () => {
+activeDivision = div;
+if (div.id === 'CBSE') {
+openCbseStandards();
+} else {
+openSubDivisions(div);
+}
+};
+grid.appendChild(card);
+});
+}
+function openSubDivisions(div) {
+hideAllViews();
+document.getElementById('subDivisionsView').classList.remove('hidden');
+document.getElementById('subDivTitle').textContent = div.title;
+const folderList = document.getElementById('folderList');
+folderList.innerHTML = '';
+Object.keys(div.folders).forEach(folderName => {
+const folderObj = div.folders[folderName];
+const files = folderObj.files;
+const price = folderObj.price || 0;
+const tagHtml = price > 0
+? <span class="price-pill">₹${price} • Chapter-Wise PDF</span>
+: <span class="free-pill">FREE</span>;
+const row = document.createElement('div');
+row.className = 'folder-card';
+row.innerHTML = <div> <strong style="font-size:15px;">📁 ${folderName} ${tagHtml}</strong> <div style="font-size:12px; color:#64748b; margin-top:3px;">${files.length} PDF Material(s) Available</div> </div> <span style="font-weight:800; color:${div.color}; font-size:13px;">Open →</span>;
+row.onclick = () => openPdfFiles(folderName, files, price, () => openSubDivisions(div));
+folderList.appendChild(row);
+});
+}
+function openPdfFiles(folderName, files, price, backCallback) {
+hideAllViews();
+document.getElementById('pdfFilesView').classList.remove('hidden');
+document.getElementById('pdfFolderTitle').textContent = folderName;
+document.getElementById('pdfFolderSub').textContent =
+price > 0
+? Important Questions Chapter-Wise PDFs — Amount: ₹${price} (Unlock once to access all chapters)
+: 'Tap "Open PDF" to view or download the study material.';
+document.getElementById('pdfBackBtn').onclick = backCallback;
+const pdfList = document.getElementById('pdfList');
+pdfList.innerHTML = '';
+files.forEach(file => {
+const row = document.createElement('div');
+row.className = 'pdf-row';
+let actionHtml = '';
+if (price > 0 && !isPaidUnlocked) {
+actionHtml = <button class="buy-btn" onclick="openPaymentModal('${file.title.replace(/'/g, "\\'")}', '${file.url}')">Unlock @ ₹${price}</button>;
+} else {
+actionHtml = <a href="${file.url}" target="_blank" rel="noopener noreferrer" class="pdf-btn">Open PDF</a>;
+}
+row.innerHTML = <div> <strong style="font-size:14px;">📄 ${file.title}</strong> <div style="font-size:12px; color:#64748b; margin-top:3px;">${file.sub}</div> </div> ${actionHtml};
+pdfList.appendChild(row);
+});
+}
+// Payment Modal Functions for ₹90 Chapter-Wise Important Questions
+function openPaymentModal(title, url) {
+pendingPdfUrl = url;
+document.getElementById('modalPdfTitle').textContent = title;
+document.getElementById('upiDisplay').textContent = MY_UPI_ID;
+document.getElementById('upiPayLink').href =
+upi://pay?pa=${encodeURIComponent(MY_UPI_ID)}&pn=KishoreEduBluprint&am=90&cu=INR&tn=${encodeURIComponent(title)};
+document.getElementById('unlockError').classList.add('hidden');
+document.getElementById('paymentModal').classList.remove('hidden');
+}
+function closePaymentModal() {
+document.getElementById('paymentModal').classList.add('hidden');
+}
+function verifyUnlockCode() {
+const entered = document.getElementById('unlockCodeInput').value.trim().toUpperCase();
+if (entered === PDF_UNLOCK_CODE) {
+isPaidUnlocked = true;
+localStorage.setItem('kishore_imp_unlocked', 'true');
+closePaymentModal();
+alert('Unlocked! You can now open all 10th & 12th Chapter-Wise Important Questions PDFs.');
+if (pendingPdfUrl) window.open(pendingPdfUrl, '_blank');
+if (activeDivision) openSubDivisions(activeDivision);
+} else {
+document.getElementById('unlockError').classList.remove('hidden');
+}
+}
+function closePaymentModal() {
+document.getElementById('paymentModal').classList.add('hidden');
+}
+function verifyUnlockCode() {
+const entered = document.getElementById('unlockCodeInput').value.trim().toUpperCase();
+if (entered === PDF_UNLOCK_CODE) {
+isPaidUnlocked = true;
+localStorage.setItem('kishore_imp_unlocked', 'true');
+closePaymentModal();
+alert('Unlocked! You can now open all 10th & 12th Chapter-Wise Important Questions PDFs.');
+if (pendingPdfUrl) window.open(pendingPdfUrl, '_blank');
+if (activeDivision) openSubDivisions(activeDivision);
+} else {
+document.getElementById('unlockError').classList.remove('hidden');
+}
+}
+function openCbseStandards() {
+hideAllViews();
+document.getElementById('cbseStdView').classList.remove('hidden');
+const grid = document.getElementById('cbseStdGrid');
+grid.innerHTML = '';
+for (let i = 1; i <= 10; i++) {
+const suffix = i === 1 ? 'st' : i === 2 ? 'nd' : i === 3 ? 'rd' : 'th';
+const stdName = ${i}${suffix} Standard;
+const card = document.createElement('div');
+card.className = 'std-card';
+card.innerHTML = <strong style="font-size:15px; display:block; margin-bottom:4px;">${stdName}</strong> <span style="font-size:12px;">Book Answer Key<br>Chapter-Wise PDF</span>;
+card.onclick = () => {
+const cbseFiles = [
+{ title: CBSE ${stdName} Mathematics — Chapter-Wise Book Answer Key, sub: 'NCERT All Chapters Solutions PDF', url: 'w3.org' },
+{ title: CBSE ${stdName} Science / EVS — Chapter-Wise Book Answer Key, sub: 'NCERT All Chapters Solutions PDF', url: 'w3.org' },
+{ title: CBSE ${stdName} Social Science — Chapter-Wise Book Answer Key, sub: 'NCERT All Chapters Solutions PDF', url: 'w3.org' },
+{ title: CBSE ${stdName} English — Chapter-Wise Book Answer Key, sub: 'NCERT All Chapters Solutions PDF', url: 'w3.org' }
+];
+openPdfFiles(CBSE ${stdName} — Book Answer Key (Chapter-Wise PDF), cbseFiles, 0, openCbseStandards);
+};
+grid.appendChild(card);
+}
+}
+function backToSubDivisions() {
+if (activeDivision) openSubDivisions(activeDivision);
+else showHome();
+}
+function openQuiz() {
+hideAllViews();
+document.getElementById('quizView').classList.remove('hidden');
+document.getElementById('quizHeading').textContent = ${activeDivision.title} — Practice Quiz;
+qIndex = 0;
+qScore = 0;
+renderQuestion();
+}
+function renderQuestion() {
+const questions = QUIZ_DATA[activeDivision.id] || [];
+const body = document.getElementById('quizBody');
+qAnswered = false;
+if (qIndex >= questions.length) {
+body.innerHTML = <div style="text-align:center; padding:24px;"> <h3 style="font-size:22px; margin-bottom:8px;">Quiz Completed!</h3> <p style="font-size:18px; font-weight:800; color:#1e3a8a; margin-bottom:18px;">Your Score: ${qScore} / ${questions.length}</p> <button class="submit-btn" style="max-width:220px;" onclick="openQuiz()">Restart Quiz</button> </div>;
+return;
+}
+const item = questions[qIndex];
+body.innerHTML = <div style="font-size:12px; font-weight:700; color:#64748b; margin-bottom:8px;">Question ${qIndex + 1} of ${questions.length}</div> <div style="font-size:17px; font-weight:800; margin-bottom:16px;">${item.q}</div> <div id="optionsContainer"></div> <button id="nextQBtn" class="submit-btn hidden" style="margin-top:10px;" onclick="qIndex++; renderQuestion();">Next Question →</button>;
+const optContainer = document.getElementById('optionsContainer');
+item.opts.forEach((optText, idx) => {
+const btn = document.createElement('button');
+btn.className = 'quiz-option';
+btn.textContent = optText;
+btn.onclick = () => {
+if (qAnswered) return;
+qAnswered = true;
+const allBtns = optContainer.querySelectorAll('.quiz-option');
+if (idx === item.ans) {
+btn.classList.add('correct');
+qScore++;
+} else {
+btn.classList.add('wrong');
+allBtns[item.ans].classList.add('correct');
+}
+document.getElementById('nextQBtn').classList.remove('hidden');
+};
+optContainer.appendChild(btn);
+});
+}
